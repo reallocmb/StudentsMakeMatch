@@ -7,6 +7,9 @@
 #include<stdbool.h>
 #include<hpdf.h>
 
+const char *file_log_path = "log.txt";
+FILE *file_log = NULL;
+
 typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
@@ -22,7 +25,7 @@ float colors[8][3] = {
     { 0.8, 0.8, 0.8 },
 };
 
-u32 colors_count = 8;
+const u32 colors_count = 8;
 
 #if 0
 const char names[][80] = {
@@ -109,6 +112,7 @@ u32 students_load(char *path)
     }
 
     students[i].name[pos] = 0;
+    i++;
 
     fclose(file);
 
@@ -120,7 +124,6 @@ u32 students_load(char *path)
 
 LPSTR OpenFileDialog() {
     OPENFILENAME ofn;       // Struktur für die Datei-Dialog Informationen
-    TCHAR szFile[260] = {0};      // Puffer für den Dateinamen
     char *result = malloc(260 * sizeof(*result));
     result[0] = 0;
 
@@ -154,12 +157,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #endif
 {
 #if 1
-    LPSTR path = OpenFileDialog();
+    char *path = OpenFileDialog();
 #endif
 #if 0
     names_count = students_load("numbers.txt");
 #elif 1
     names_count = students_load(path);
+    free(path);
 #else
     names_count = students_load("schueler.txt");
 #endif
